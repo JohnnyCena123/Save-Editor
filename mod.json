@@ -10,5 +10,10 @@
 	"name": "Save Editor",
 	"version": "v1.0.0",
 	"developer": "Johnny Cena",
-	"description": ""
+	"description": "",
+	"resources": {
+		"sprites": [
+			"resources/*.png"
+		]
+	}
 }
