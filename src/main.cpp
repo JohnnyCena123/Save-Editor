@@ -11,10 +11,15 @@ class $modify(MyMenuLayer, MenuLayer) {
 
     bool init() {
         if (MenuLayer::init()) return false;
-        auto btn = CCMenuItemSpriteExtra::create(
-            CircleButtonSprite::createWithSprite("btn.png"_spr), 
+        auto spr = CircleButtonSprite::createWithSpriteFrameName("adRope_001.png");
+
+	if (!spr) return true;
+	auto btn = CCMenuItemSpriteExtra::create(
+            spr,
             this, menu_selector(MyMenuLayer::onSaveEditor)
         );
+
+	if (btn == nullptr) return true;
 
         auto menu = this->getChildByID("profile-menu");
         menu->setLayout(
@@ -24,7 +29,7 @@ class $modify(MyMenuLayer, MenuLayer) {
         );
 
         menu->addChild(btn);
-
+	menu
         return true;
     }
 
