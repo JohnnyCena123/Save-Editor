@@ -6,30 +6,30 @@
 
 #include "SaveEditorLayer.hpp"
 
+using namespace cocos2d;
+
 #include <Geode/modify/MenuLayer.hpp>
 class $modify(MyMenuLayer, MenuLayer) {
 
     bool init() {
-        if (MenuLayer::init()) return false;
-        auto spr = CircleButtonSprite::createWithSpriteFrameName("adRope_001.png");
+        if (!MenuLayer::init()) return false;
+        auto spr = geode::CircleButtonSprite::createWithSprite("btn.png"_spr, .75f);
 
-	if (!spr) return true;
 	auto btn = CCMenuItemSpriteExtra::create(
             spr,
             this, menu_selector(MyMenuLayer::onSaveEditor)
         );
 
-	if (btn == nullptr) return true;
-
         auto menu = this->getChildByID("profile-menu");
-        menu->setLayout(
-            RowLayout::create()
-            ->setAxisAlignment(AxisAlignment::Start)
-            ->setGap(10.f)
-        );
-
         menu->addChild(btn);
-	menu
+	menu->setLayout(
+            geode::RowLayout::create()
+            ->setAxisAlignment(geode::AxisAlignment::Start)
+            ->setGap(10.f)
+	);
+
+	btn->setID("button"_spr);
+
         return true;
     }
 
