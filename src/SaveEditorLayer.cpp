@@ -28,15 +28,18 @@ bool SaveEditorLayer::init() {
 	m_contentLayer->setAnchorPoint({0.f, 0.f});
 	this->addChild(m_contentLayer);
 
-	m_scrollLayer = geode::ScrollLayer::create({winSize.width - 100.f, winSize.height - 100.f});
+	m_scrollLayer = geode::ScrollLayer::create({winSize.width - 150.f, winSize.height - 100.f});
 	m_scrollLayer->ignoreAnchorPointForPosition(false);
 	m_contentLayer->addChildAtPosition(m_scrollLayer, Anchor::Center);
+
+	m_scrollbar = geode::Scrollbar::create(m_scrollLayer);
+	m_contentLayer->addChildAtPosition(m_scrollbar, Anchor::Right, {-50.f, 0.f});
 
 	m_scrollLayer->m_contentLayer->setLayout(geode::RowLayout::create()
 //	m_scrollLayer->m_contentLayer->setLayout(geode::ColumnLayout::create()
 		->setAxisAlignment(AxisAlignment::Start)
-//		->setCrossAxisAlignment(AxisAlignment::End)
-		->setGap(10.f)
+		->setCrossAxisAlignment(AxisAlignment::End)
+		->setGap(30.f)
 //		->setAxisReverse(true)
 //		->setCrossAxisReverse(true)
 		->setGrowCrossAxis(true)
@@ -48,6 +51,14 @@ bool SaveEditorLayer::init() {
 
 
 	addStats();
+
+	if (m_scrollLayer->m_contentLayer->getContentHeight() < m_scrollLayer->getContentHeight()) {
+		auto diff = m_scrollLayer->getContentHeight() - m_scrollLayer->m_contentLayer->getContentHeight();
+		m_scrollLayer->m_contentLayer->setContentHeight(m_scrollLayer->getContentHeight());
+		for (auto child : geode::cocos::CCArrayExt<CCNode*>(m_scrollLayer->m_contentLayer->getChildren()))
+			child->setPositionY(child->getPositionY() + diff);
+	}
+	m_scrollLayer->scrollToTop();
 
 
 	m_btnMenu = CCMenu::create();
@@ -114,11 +125,14 @@ void SaveEditorLayer::addStats() {
 		node->setString(fmt::format("{}", gsm->getStat(key.c_str())));
 		node->setLabel(name);
         	node->setFilter("0123456789");
+		node->setScale(1.5f);
 		m_statNodes->setObject(node, key);
 
 		auto container = CCNode::create();
-		container->setContentSize({node->getContentWidth(), 1.5f * node->getContentHeight()});
+		container->setContentSize({node->getScaledContentWidth(), 1.5f * node->getScaledContentHeight()});
 		container->addChildAtPosition(node, Anchor::Center, {0.f, -.15f * node->getContentHeight()});
+		container->setAnchorPoint({.5f, .5f});
+		container->setScale(15.f);
 		m_scrollLayer->m_contentLayer->addChild(container);
 	}
 
