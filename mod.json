@@ -8,9 +8,9 @@
 	},
 	"id": "johnny_cena.save_editor",
 	"name": "Save Editor",
-	"version": "v1.0.0",
+	"version": "v0.1.0",
 	"developer": "Johnny Cena",
-	"description": "",
+	"description": "Easily edit your save file",
 	"resources": {
 		"sprites": [
 			"resources/*.png"
